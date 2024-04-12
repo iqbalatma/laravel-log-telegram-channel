@@ -2,7 +2,7 @@
 
 namespace Iqbalatma\LaravelLogTelegramChannel\Services;
 
-use App\Jobs\SendMessageViaBotJob;
+use Iqbalatma\LaravelLogTelegramChannel\Jobs\SendMessageViaBotJob;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\LogRecord;
