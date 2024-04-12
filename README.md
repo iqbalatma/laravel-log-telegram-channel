@@ -1,6 +1,9 @@
 # Laravel Log Telegram Channel
 This is a log handler for custom channel to send log via telegram bot. Telegram bot will send message to channel and you can specify log level.
 
+> [!IMPORTANT]
+> Since telegram bot has limit for sending message, please use this package wisely. My recomendation is use this for log high level like emergency or critical.
+
 ## How to install
 You can install this package via composer
 ```console
