@@ -2,9 +2,7 @@
 
 namespace Iqbalatma\LaravelLogTelegramChannel\Services;
 
-use Exception;
-use Illuminate\Support\Facades\Http;
-use Iqbalatma\LaravelLogTelegramChannel\FallbackLogExceptionHandler;
+use App\Jobs\SendMessageViaBotJob;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\LogRecord;
@@ -12,8 +10,8 @@ use Monolog\Utils;
 
 class TelegramHandler extends AbstractProcessingHandler
 {
-    private const int MAX_MESSAGE_LENGTH = 4096;
-    private const string PARSE_MODE = "html";
+    public const int MAX_MESSAGE_LENGTH = 4096;
+    public const string PARSE_MODE = "html";
 
     /**
      * @param LogRecord $record
@@ -32,16 +30,7 @@ class TelegramHandler extends AbstractProcessingHandler
      */
     protected function send(string $message): void
     {
-        try {
-            $url = config("log_telegram_channel.host") . "/" . config("log_telegram_channel.token") . "/sendMessage";
-            Http::post($url, [
-                "text" => $message,
-                "chat_id" => config("log_telegram_channel.channel_id"),
-                "parse_mode" => self::PARSE_MODE,
-            ]);
-        } catch (Exception $e) {
-            FallbackLogExceptionHandler::handle($e);
-        }
+        SendMessageViaBotJob::dispatch($message);
     }
 
     /**
