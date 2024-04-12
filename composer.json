@@ -1,0 +1,17 @@
+{
+    "name": "iqbalatma/laravel-log-telegram-channel",
+    "description": "Laravel log with channel telegram",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Iqbalatma\\LaravelLogTelegramChannel\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Iqbal Atma Muliawan",
+            "email": "iqbalatma@gmail.com"
+        }
+    ],
+    "require": {}
+}
