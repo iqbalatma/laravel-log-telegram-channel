@@ -119,23 +119,47 @@ class TelegramFormatter implements FormatterInterface
     protected function formatExtraData(): self
     {
         try {
+            $extra = "<b>Extra:</b> \n";
+
+            $this->additionalExtraData($extra);
             if (isset($this->logRecord->context["extra"])) {
-                $extra = "<b>Extra:</b> \n";
                 foreach ($this->logRecord->context["extra"] as $key => $value) {
                     if ($value) { //to prevent null value
                         $extra .= "\t$key : $value\n";
                     }
                 }
-                $this->message = str_replace('%extra%', $extra . "\n", $this->message);
-            } else {
-                $this->message = str_replace('%extra%', '', $this->message);
             }
+
+            $this->message = str_replace('%extra%', $extra . "\n", $this->message);
         } catch (Exception $e) {
             FallbackLogExceptionHandler::handle($e);
         }
         return $this;
     }
 
+
+    /**
+     * @param string $extra
+     * @return void
+     */
+    private function additionalExtraData(string &$extra): void
+    {
+        $extra .= "\tClient IP : " . request()->getClientIp() . "\n";
+        $extra .= "\tRequest URI : " . request()->getRequestUri() . "\n";
+        $extra .= "\tFull URI : " . request()->getUri() . "\n";
+        $extra .= "\tHTTP Method : " . request()->getMethod() . "\n";
+        $extra .= "\tProtocol Version : " . request()->getProtocolVersion() . "\n";
+        $extra .= "\tScheme : " . request()->getScheme() . "\n";
+        $extra .= "\tPort : " . request()->getPort() . "\n";
+        $extra .= "\tRequest :\n";
+
+        foreach (request()->all() as $key => $value) {
+            if ($key === "_token"){
+                continue;
+            }
+            $extra .= "\t\t\t\t\t$key : " . json_encode($value) . "\n";
+        }
+    }
 
     /**
      * @return $this
