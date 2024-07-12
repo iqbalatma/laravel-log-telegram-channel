@@ -130,6 +130,14 @@ class TelegramFormatter implements FormatterInterface
                 }
             }
 
+            if (isset($this->logRecord->extra)) {
+                foreach ($this->logRecord->extra as $key => $value) {
+                    if ($value) { //to prevent null value
+                        $extra .= "\t$key : $value\n";
+                    }
+                }
+            }
+
             $this->message = str_replace('%extra%', $extra . "\n", $this->message);
         } catch (Exception $e) {
             FallbackLogExceptionHandler::handle($e);
